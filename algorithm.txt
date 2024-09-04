@@ -1,0 +1,39 @@
+
+### Key Algorithm: Ray Casting for 3D Rendering
+
+1. **Initialization**:
+   - The screen is defined with a width of 120 columns and a height of 40 rows.
+   - The world map is a 16x16 grid where `#` represents a wall, and `.` represents open space.
+   - The player starts at a specific position (`fPlayerX`, `fPlayerY`) with an initial rotation angle (`fPlayerA`).
+   - The player's field of view (`fFOV`) and the maximum rendering distance (`fDepth`) are set.
+
+2. **Main Loop**:
+   - The game runs in a continuous loop, constantly updating the player's position and the screen based on user input.
+   - Time is calculated between frames (`fElapsedTime`) to ensure consistent movement speed, even if the frame rate changes.
+
+3. **Player Controls**:
+   - The player can rotate left (`A`) or right (`D`), which changes `fPlayerA`.
+   - The player can move forward (`W`) or backward (`S`), which changes `fPlayerX` and `fPlayerY`. Collision detection prevents the player from moving through walls.
+
+4. **Ray Casting**:
+   - For each column of the screen, a ray is cast into the world to determine what the player sees in that direction.
+   - The angle of the ray (`fRayAngle`) is calculated based on the player's current rotation and field of view.
+   - The ray is incrementally extended (`fStepSize`) until it hits a wall (`bHitWall`) or reaches the maximum depth (`fDepth`).
+
+5. **Wall Detection**:
+   - The ray checks each grid cell it passes through. If it hits a wall (`#`), it stops, and the distance to the wall is recorded.
+   - To add detail, the algorithm checks for boundaries between wall blocks and shades them differently if detected.
+
+6. **Rendering**:
+   - The screen is divided into three sections: ceiling, wall, and floor.
+   - The height of the wall on the screen is calculated based on the distance from the player. Closer walls appear taller, and distant walls appear shorter.
+   - The walls are shaded based on distance, with closer walls appearing brighter.
+   - The floor is shaded with a gradient that fades as it gets closer to the horizon.
+
+7. **Output**:
+   - The final rendered scene is written to the screen buffer, which is then displayed on the console.
+
+### Summary of the Algorithm
+The core algorithm is ray casting, which simulates a 3D perspective on a 2D grid. By casting rays from the player's position and determining where they intersect with walls, the engine constructs a 3D view of the environment. The use of shading and boundary detection adds realism to the rendered scene, simulating lighting effects.
+
+This approach is computationally simple, making it suitable for running in real-time even in a basic console environment. The code uses basic trigonometry and linear algebra to calculate the ray intersections and screen rendering, ensuring that the scene looks realistic from the player's perspective.
